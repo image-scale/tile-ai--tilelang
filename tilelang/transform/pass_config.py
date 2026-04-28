@@ -225,3 +225,9 @@ class PassConfigKey(str, Enum):
 
     TL_DISABLE_OUT_OF_BOUND_WARNING = "tl.disable_out_of_bound_warning"
     """Disable out-of-bound access warnings in safe memory access legalization. Default: False"""
+
+    TL_ENABLE_ASYNC_COPY = "tl.enable_async_copy"
+    """Enable automatic conversion of global->shared copies to cp.async.
+    When True (default), LowerPTXAsyncCopy will rewrite suitable copies
+    to use PTX cp.async instructions. Set to False to disable this rewrite.
+    Default: True"""
