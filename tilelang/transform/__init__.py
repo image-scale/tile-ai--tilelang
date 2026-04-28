@@ -573,3 +573,52 @@ def LowerLDGSTG():
         The result pass
     """
     return _ffi_api.LowerLDGSTG()  # type: ignore
+
+
+def LowerPTXAsyncCopy():
+    """Lower global to shared memory copy to PTX cp.async instructions.
+
+    This is an alias for InjectPTXAsyncCopy for backward compatibility.
+
+    Returns
+    -------
+    fpass : tvm.transform.Pass
+        The result pass
+    """
+    return _ffi_api.InjectPTXAsyncCopy()  # type: ignore
+
+
+def OptimizeCPAsyncSync():
+    """Optimize cp.async synchronization primitives.
+
+    This pass optimizes the placement and parameters of cp.async commit_group
+    and wait_group calls to minimize synchronization overhead.
+
+    Returns
+    -------
+    fpass : tvm.transform.Pass
+        The result pass
+    """
+    if hasattr(_ffi_api, "OptimizeCPAsyncSync"):
+        return _ffi_api.OptimizeCPAsyncSync()  # type: ignore
+    # Fall back to identity transform if not available
+    return lambda mod: mod
+
+
+def ThreadPartialSync(storage_scope: str):
+    """Insert partial thread synchronization for the given storage scope.
+
+    Parameters
+    ----------
+    storage_scope: str
+        The target storage scope.
+
+    Returns
+    -------
+    fpass : tvm.transform.Pass
+        The result pass
+    """
+    if hasattr(_ffi_api, "ThreadPartialSync"):
+        return _ffi_api.ThreadPartialSync(storage_scope)  # type: ignore
+    # Fall back to regular ThreadSync if partial sync is not available
+    return _ffi_api.ThreadSync(storage_scope)  # type: ignore
